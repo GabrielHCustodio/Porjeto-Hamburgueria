@@ -1,17 +1,20 @@
 <template>
-  <div>
-    <BannerApp />
-    <h1 class="main-container">Home</h1>
+  <BannerApp />
+  <div class="main-container">
+    <h1>Home</h1>
+    <BurgerForm />
   </div>
 </template>
 
 <script>
 import BannerApp from "../components/Banner.vue"
+import BurgerForm from "../components/Burger.vue"
 
 export default {
   name: "HomeApp",
   components: {
-    BannerApp
+    BannerApp,
+    BurgerForm
   }
 }
 </script>
