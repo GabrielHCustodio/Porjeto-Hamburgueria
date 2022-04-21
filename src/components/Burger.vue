@@ -1,8 +1,8 @@
 <template>
     <div>
-        <p>Componente de mensagem</p>
+        <MessagePedido :msg="msg" v-show="msg"/>
         <div>
-            <form id="form-container">
+            <form id="form-container" @submit="createBurger">
                 <div class="input-container">
                     <label for="nome">Nome do cliente:</label>
                     <input type="text" name="nome" id="nome" v-model="nome" placeholder="Informe seu nome">
@@ -10,24 +10,24 @@
 
                 <div class="input-container">
                     <label for="pao">Escolha o tipo de pão</label>
-                    <select name="pao" id="pao">
+                    <select name="pao" id="pao" v-model="pao">
                         <option value="" selected>Selecione o tipo de pao</option>
-                        <option value="Integral">Integral</option>
+                        <option v-for="pao in paes" :key="pao.id" :value="pao.tipo">{{ pao.tipo }}</option>
                     </select>
                 </div>
 
                 <div class="input-container">
-                    <label for="carne">Escolha o tipo de pão</label>
-                    <select name="carne" id="carne">
+                    <label for="carne">Escolha o tipo de carne</label>
+                    <select name="carne" id="carne" v-model="carne">
                         <option value="" selected>Selecione o tipo de carne</option>
-                        <option value="Maminha">Maminha</option>
+                        <option v-for="carne in carnes" :key="carne.id" :value="carne.tipo">{{ carne.tipo }}</option>
                     </select>
                 </div>
 
-                <div class="input-container">
+                <div class="input-container" id="opcionais-container">
                     <label for="opcionais">Selecione os opcionais:</label>
-                    <div class="checkbox-container">
-                        <input type="checkbox" name="opcionais" v-model="opcionais" value="salame"><span>Salame</span>
+                    <div class="checkbox-container" v-for="opcional in opcionaisdata" :key="opcional.id">
+                        <input type="checkbox" name="opcionais" v-model="opcionais" :value="opcional.tipo"><span>{{opcional.tipo}}</span>
                     </div>
                 </div>
 
@@ -40,8 +40,73 @@
 </template>
 
 <script>
+    import MessagePedido from "./Message.vue"
+
     export default {
-        name: "BurgerForm"
+        name: "BurgerForm",
+        data() {
+            return {
+                //request
+                paes: null,
+                carnes: null,
+                opcionaisdata: null,
+                //response
+                nome: null,
+                pao: null,
+                carne: null,
+                opcionais: [],
+                msg: null
+            }
+        },
+       methods: {
+            async getIngredientes() {
+                const req = await fetch('http://localhost:3000/ingredientes')
+                const data = await req.json()
+
+                this.paes = data.paes
+                this.carnes = data.carnes
+                this.opcionaisdata = data.opcionais
+            },
+            async createBurger(e) {
+                e.preventDefault()
+
+                const pedido = {
+                    nome: this.nome,
+                    pao: this.pao,
+                    carne: this.carne,
+                    opcionais: Array.from(this.opcionais),
+                    status: "Solicitado",
+                }
+
+                const pedidoJson = JSON.stringify(pedido)
+
+                const req = await fetch('http://localhost:3000/burgers', {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: pedidoJson
+                })
+
+                const res = await req.json()
+
+                //Adicionar msg
+                this.msg = `Pedido N° ${res.id} realizado com sucesso`
+
+                //Limpar msg
+                setTimeout(() => this.msg = "" , 2500)
+
+                //Limpar campos
+                this.nome = ""
+                this.pao = ""
+                this.carne = ""
+                this.opcionais = []
+            }
+        },
+        mounted() {
+            this.getIngredientes()
+        },
+        components: {
+            MessagePedido
+        }
     }
 </script>
 
