@@ -33,6 +33,10 @@
       },
       {
         "id": 4,
+        "tipo": "Frango"
+      },
+      {
+        "id": 5,
         "tipo": "Veggie burger"
       }
     ],
