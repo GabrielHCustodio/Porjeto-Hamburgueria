@@ -81,5 +81,55 @@
       "tipo": "Finalizado"
     }
   ],
-  "burgers": []
+  "burgers": [
+    {
+      "nome": "Silvana",
+      "pao": "Integral",
+      "carne": "Frango",
+      "opcionais": [
+        "Tomate",
+        "Pepino"
+      ],
+      "status": "Solicitado",
+      "id": 1
+    },
+    {
+      "nome": "Gabriel",
+      "pao": "3 Queijos",
+      "carne": "Picanha",
+      "opcionais": [
+        "Bacon",
+        "Cheddar",
+        "Tomate",
+        "Cebola roxa"
+      ],
+      "status": "Solicitado",
+      "id": 2
+    },
+    {
+      "nome": "Matheus",
+      "pao": "Italiano Branco",
+      "carne": "Alcatra",
+      "opcionais": [
+        "Tomate"
+      ],
+      "status": "Solicitado",
+      "id": 3
+    },
+    {
+      "nome": "Odair",
+      "pao": "Parmesão e Orégano",
+      "carne": "Maminha",
+      "opcionais": [
+        "Bacon",
+        "Salame",
+        "Cebola roxa",
+        "Pepino",
+        "Tomate",
+        "Cheddar"
+      ],
+      "status": "Solicitado",
+      "id": 4
+    }
+  ]
 }

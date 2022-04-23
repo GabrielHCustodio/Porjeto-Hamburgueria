@@ -12,21 +12,25 @@
         </div>
 
         <div id="burger-table-rows">
-            <div class="burger-table-row">
-                <div class="order-number">1</div>
-                <div>Gabriel</div>
-                <div>Integral</div>
-                <div>Picanha</div>
+            <div class="burger-table-row" v-for="burger in burgers" :key="burger.id">
+                <div class="order-number">{{ burger.id }}</div>
+                <div>{{ burger.nome }}</div>
+                <div>{{ burger.pao }}</div>
+                <div>{{ burger.carne }}</div>
                 <div>
                     <ul>
-                        <li>Bacon</li>
-                        <li>Cheddar</li>
+                        <li v-for="(opcional, index) in burger.opcionais" :key="index">
+                            {{ opcional }}
+                        </li>
                     </ul>
                 </div>
                 <div>
                     <select name="status" class="status">
                         <option value="">Selecione</option>
-                    </select>
+                        <option v-for="s in status" :key="s.id" value="s.tipo" :selected="burger.status == s.tipo">
+                            {{ s.tipo }}
+                        </option>
+                    </select> 
 
                     <button class="delete-btn">Deletar</button>
                 </div>
@@ -37,7 +41,35 @@
 
 <script>
 export default {
-    name: "DashboardPedidos"
+    name: "DashboardPedidos",
+    data() {
+        return {
+            burgers: null,
+            burger_id: null,
+            status: []
+        }
+    },
+    methods: {
+        async getPedidos() {
+            const req = await fetch('http://localhost:3000/burgers')
+            const data = await req.json()
+
+            this.burgers = data
+
+            // Status pedido
+
+            this.getStatus()
+        },
+        async getStatus() {
+            const req = await fetch('http://localhost:3000/status')
+            const data = await req.json()
+
+            this.status = data
+        }
+    },
+    mounted() {
+        this.getPedidos()
+    }
 }
 </script>
 
