@@ -16,11 +16,12 @@ export default {
     background-position: 0 -250px;
     background-size: cover;
     background-repeat: no-repeat;
-    height: 500px;
+    height: 700px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
   }
+  
   #main-banner h1 {
     color: #FFF;
     text-align: center;
